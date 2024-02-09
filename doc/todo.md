@@ -1,3 +1,4 @@
+* Key and resource lifetime hooks (hold at promise, release at majority vote received)
 * Get type checking working in jest tests
 * Key and resource lifetime hooks (hold at promise, release at majority vote received)
 * License
