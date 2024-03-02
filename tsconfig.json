@@ -6,7 +6,7 @@
 				"forceConsistentCasingInFileNames": true,
         "declaration": true,
         "outDir": "./dist",
-        "strict": false,
+        "strict": true,
         "esModuleInterop": true,
         "sourceMap": true,
         "types": [ "node", "jest" ]

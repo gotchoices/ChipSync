@@ -1,8 +1,6 @@
-import { validateCode } from "chipcode";
 import { TrxParticipantState } from "./participant-state";
 import { Signature, SignatureType, TrxRecord } from "./record";
 import * as crypto from 'crypto';
-import { signDigest, verifyDigest } from "../asymmetric";
 
 interface RecordState {
 	ourPromiseNeeded: boolean,

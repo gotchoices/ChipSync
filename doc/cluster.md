@@ -3,35 +3,33 @@
 ## Spoke voting consensus algorithm
 
 The goal of this algorithm is to affect a transaction and have all nodes eventually converge on the result, and to do this with good performance in the normal case.  The algorithm consists of the following elements:
-* Participant - a node that is participating in the transaction; promises from all participants is required in order to transact
-* Referee - a node which votes on the commitment of the transaction.  The relationship between referee nodes and participant ones is orthogonal, though may be policy constrained.
-* Listener - a node which is sent a record of the transaction.  No guarantees of receipt are made.
-* Replica - a listener which may also be capable to recalling received transactions
+* **Participant** - a node that is participating in the transaction; promises from all participants is required in order to transact
+* **Referee** - a node which votes on the commitment of the transaction.  The relationship between referee nodes and participant ones is orthogonal, though may be policy constrained.
+* **Listener** - a node which is sent a record of the transaction.  No guarantees of receipt are made.
+* **Replica** - a listener which may also be capable to recalling received transactions
 
 Other terms:
-* Payload - the body of the transaction
-* Plan - a description of the node topology of the transaction and the relationahip between elements
-* Record - A data structure containing the transaction's payload, it's plan, and signature state
+* **Payload** - the body of the transaction
+* **Topology** - a description of the nodes involved in the transaction and the relationships between them
+* **Record** - A data structure containing the transaction's payload, it's topology, and signature state
 
 ## Phases
 
-1. Promise – An all-or-nothing decision by the participants to join the transaction.  This entails affixing a digital signature of the plan and payload.  Each promise signature is independant of the others and may be added in any order.
+0. Discovery - the search for or creation of the topology is not the domain of this library.  See [ChipNet](https://github.com/gotchoices/ChipNet) for an example route discovery mechanism.
 
-1. Commit - One or more referee nodes vote to commit, or after a timeout, void the fully promised transaction.  A majority of commit or void votes constitutes a tentative consensus, and will be honored by all nodes who receive such a record
+1. **Promise** – An all-or-nothing decision by the participants to join the transaction.  This entails affixing a digital signature of the plan and payload.  Each promise signature is independent of the others and may be added in any order.
 
-1. Consensus - dissemenation of commitment record information between referees and back to participants.  Agreement is rule based; the record itself represents the final status of the transaction.
+2. **Commit** - Some number of referee nodes vote to commit, or after a timeout, to void the fully promised transaction.  A majority of commit or void votes constitutes a pending consensus, and will be honored by all nodes who receive such a record
+
+3. **Consensus** - dissemination of commitment record information between referees and back to participants.  Agreement is rule based (pre-existing rules for even-numbered ties, etc.); the record itself represents the final status of the transaction.
 	
-## Discovery Phase
-
-...
-
 ## Promise Phase
 
 All participants agree to the terms and allocate their resources.  Agreement is in the form of a digital signature of the plan and terms, at which point changes are locked in.  All nodes can validate a given participant's signature using its public key.
 
 <p align="center"><img src="figures/promise-start.png" width="500" title="Promise initiation"></p>
 
-* Originator validates and adds own promise signature and sends in both directions
+* Originator validates and adds own promise signature and sends in reachable directions (both in a ring)
   * Each participant also adds own promise and forwards
 
 * Each participant validates the record, including
@@ -123,7 +121,7 @@ If a majority of referees go offline indefinitely, the participants are stuck wi
 
 ### Lying referees
 
-Referee may intentionally or unintentionally "lie" and give out contradictory votes.  In the worst case, where said referee is also a tie breaker voting wise, this can cause a situation where some participants commit their resources, while others roll them back.  This will be discovered during Concensus, and each participant can take action based on what is most adventageous.  For instance:
+Referee may intentionally or unintentionally "lie" and give out contradictory votes.  In the worst case, where said referee is also a tie breaker voting wise, this can cause a situation where some participants commit their resources, while others roll them back.  This will be discovered during Consensus, and each participant can take action based on what is most advantageous.  For instance:
 * a participant that was told to void, which is downstream of nodes which committed, may choose to remain in a voided state, but may elect to participate in a subsequent correcting lift
 * a participant that was told to commit, which is downstream of nodes which voided, may create a compensating reversal transaction with its peers
 

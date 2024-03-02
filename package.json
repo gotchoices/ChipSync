@@ -2,7 +2,7 @@
   "name": "chipsync",
   "version": "0.1.0",
   "target": "module",
-  "description": "A meta-protocol library for MyCHIPS distributed operations",
+  "description": "A meta-protocol library for distributed transactions",
   "main": "dist/index.js",
   "exports": {
     ".": "./dist/index.js"
@@ -12,9 +12,16 @@
     "build": "npm run clean && tsc -p tsconfig.build.json",
     "test": "jest"
   },
+	"homepage": "https://github.com/gotchoices/ChipSync",
+  "bugs": {
+    "url": "https://github.com/gotchoices/ChipSync/issues"
+  },
   "keywords": [
     "chipsync",
     "mychips",
+		"distributed",
+		"transactions",
+		"consensus",
     "library"
   ],
   "author": "Nathan Allan",
@@ -29,7 +36,6 @@
   },
   "dependencies": {
     "chipcode": "workspace:^",
-    "chipcryptbase": "^0.1.7",
-    "secp256k1": "^5.0.0"
+    "chipcryptbase": "^0.1.7"
   }
 }

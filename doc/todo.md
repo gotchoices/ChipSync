@@ -1,4 +1,5 @@
 * Key and resource lifetime hooks (hold at promise, release at majority vote received)
+* Logical clock concept described in ChipNet for complete timing related coverage
 * Get type checking working in jest tests
 * Key and resource lifetime hooks (hold at promise, release at majority vote received)
 * License
